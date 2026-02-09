@@ -5,7 +5,7 @@ import ErrorReporter from "@/components/ErrorReporter";
 import Script from "next/script";
 
 export const metadata: Metadata = {
-  title: "FinSkill Academy | AI-Powered Finance Upskilling",
+  title: "SkillHouse | AI-Powered Finance Upskilling",
   description: "Comprehensive upskilling for accountants and finance professionals. Master AI tools, practical use cases, and industry-specific standards. B2B & B2C programs with placement assistance.",
 };
 

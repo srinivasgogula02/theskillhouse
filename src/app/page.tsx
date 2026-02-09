@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   BookOpen,
   BrainCircuit,
@@ -22,6 +23,8 @@ import {
   Star,
   Zap,
   Globe,
+  Menu,
+  X,
 } from "lucide-react";
 
 const fadeUp = {
@@ -37,43 +40,87 @@ const stagger = {
   visible: { transition: { staggerChildren: 0.1 } },
 };
 
+const LOGO_URL = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjL8YD3tB5hgi3dXYkoYjoLarNA0_4dpfDh59PzCz4NuFnUo86Cesytq-PWi8g1W70FhdDjWN8dLcak0bYt3Xgy1GhTqO89sOSRp2EEuVIfMP2dBixqfI6cswP6ZA0V3mENHRC_gHEjxN-ImMuzrQXtK4tDp6nAvGB0XebXBDlrNCXDprfQTgV2TC7W92w/s320/download%20(1)%20(1).png";
+
+const navLinks = [
+  { href: "#programs", label: "Programs" },
+  { href: "#ai-skills", label: "AI Skills" },
+  { href: "#beyond", label: "Beyond Accounting" },
+  { href: "#placement", label: "Placement" },
+];
+
 export default function Home() {
-  return (
-    <div className="min-h-screen bg-white text-gray-900 overflow-x-hidden">
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-          <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-lg bg-[#063b2b] flex items-center justify-center">
-              <GraduationCap className="w-5 h-5 text-white" />
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+    return (
+      <div className="min-h-screen bg-white text-gray-900 overflow-x-hidden">
+        {/* Navigation */}
+        <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+              <div className="flex items-center gap-2">
+                <img
+                  src={LOGO_URL}
+                  alt="SkillHouse"
+                  className="h-9 w-auto"
+                />
+              </div>
+            <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
+              {navLinks.map((link) => (
+                <a key={link.href} href={link.href} className="hover:text-[#063b2b] transition">
+                  {link.label}
+                </a>
+              ))}
             </div>
-            <span className="text-lg font-bold text-[#063b2b]">
-              FinSkill Academy
-            </span>
+            <div className="flex items-center gap-3">
+              <a
+                href="#enroll"
+                className="hidden sm:inline-flex items-center gap-2 bg-[#063b2b] text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-[#0a825e] transition"
+              >
+                Enroll Now
+                <ArrowRight className="w-4 h-4" />
+              </a>
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition"
+                aria-label="Toggle menu"
+              >
+                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            </div>
           </div>
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-            <a href="#programs" className="hover:text-[#063b2b] transition">
-              Programs
-            </a>
-            <a href="#ai-skills" className="hover:text-[#063b2b] transition">
-              AI Skills
-            </a>
-            <a href="#beyond" className="hover:text-[#063b2b] transition">
-              Beyond Accounting
-            </a>
-            <a href="#placement" className="hover:text-[#063b2b] transition">
-              Placement
-            </a>
-          </div>
-          <a
-            href="#enroll"
-            className="hidden sm:inline-flex items-center gap-2 bg-[#063b2b] text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-[#0a825e] transition"
-          >
-            Enroll Now
-            <ArrowRight className="w-4 h-4" />
-          </a>
-        </div>
-      </nav>
+
+          {/* Mobile Menu */}
+          <AnimatePresence>
+            {mobileMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="md:hidden bg-white border-t border-gray-100 overflow-hidden"
+              >
+                <div className="px-4 py-4 space-y-1">
+                  {navLinks.map((link) => (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-[#063b2b]/5 hover:text-[#063b2b] transition"
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                  <a
+                    href="#enroll"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block mt-2 text-center bg-[#063b2b] text-white px-5 py-3 rounded-full text-sm font-semibold hover:bg-[#0a825e] transition"
+                  >
+                    Enroll Now
+                  </a>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </nav>
 
       {/* Hero */}
       <section className="relative pt-32 pb-20 sm:pt-40 sm:pb-28 bg-gradient-to-br from-[#063b2b] via-[#0a825e] to-[#063b2b]">
@@ -764,7 +811,7 @@ export default function Home() {
             <p className="mt-6 text-white/50 text-sm">
               Have questions? Reach out to us at{" "}
               <span className="text-[#7df3c4] font-medium">
-                hello@finskillacademy.com
+                hello@skillhouse.in
               </span>
             </p>
           </motion.div>
@@ -776,12 +823,13 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 rounded-lg bg-[#0a825e] flex items-center justify-center">
-                  <GraduationCap className="w-4 h-4 text-white" />
-                </div>
-                <span className="text-white font-bold">FinSkill Academy</span>
-              </div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <img
+                      src={LOGO_URL}
+                      alt="SkillHouse"
+                      className="h-8 w-auto"
+                    />
+                  </div>
               <p className="text-sm leading-relaxed">
                 Empowering finance professionals with AI skills, practical
                 expertise, and career support.
@@ -808,14 +856,14 @@ export default function Home() {
             <div>
               <h4 className="text-white font-semibold mb-4">Contact</h4>
               <ul className="space-y-2 text-sm">
-                <li>hello@finskillacademy.com</li>
+                <li>hello@skillhouse.in</li>
                 <li>+91 98765 43210</li>
                 <li>Mumbai, India</li>
               </ul>
             </div>
           </div>
           <div className="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm">
-            <p>&copy; 2025 FinSkill Academy. All rights reserved.</p>
+            <p>&copy; 2025 SkillHouse. All rights reserved.</p>
             <div className="flex gap-6">
               <a href="#" className="hover:text-white transition">
                 Privacy Policy
