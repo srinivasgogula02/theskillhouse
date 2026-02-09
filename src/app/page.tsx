@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import {
   BookOpen,
   BrainCircuit,
@@ -49,8 +49,47 @@ const navLinks = [
   { href: "#placement", label: "Placement" },
 ];
 
+function CountUp({ target, suffix = "" }: { target: number; suffix?: string }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true });
+
+  useEffect(() => {
+    if (!inView) return;
+    let start = 0;
+    const duration = 2000;
+    const step = Math.ceil(target / (duration / 16));
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= target) {
+        setCount(target);
+        clearInterval(timer);
+      } else {
+        setCount(start);
+      }
+    }, 16);
+    return () => clearInterval(timer);
+  }, [inView, target]);
+
+  return <span ref={ref}>{count}{suffix}</span>;
+}
+
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://tally.so/widgets/embed.js";
+    script.onload = () => {
+      if (typeof (window as any).Tally !== "undefined") {
+        (window as any).Tally.loadEmbeds();
+      }
+    };
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
     return (
       <div className="min-h-screen bg-white text-gray-900 overflow-x-hidden">
@@ -775,48 +814,50 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA / Enroll Section */}
-      <section
-        id="enroll"
-        className="py-20 sm:py-28 bg-gradient-to-br from-[#063b2b] via-[#0a825e] to-[#063b2b] text-white"
-      >
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
-              Ready to Transform Your Finance Career?
-            </h2>
-            <p className="mt-6 text-white/70 text-lg max-w-2xl mx-auto">
-              Join our next batch and get access to AI-powered training,
-              industry mentors, and placement assistance. Limited seats available.
-            </p>
-            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="#"
-                className="inline-flex items-center justify-center gap-2 bg-white text-[#063b2b] px-8 py-4 rounded-full text-base font-bold hover:bg-[#7df3c4] transition"
-              >
-                Enroll as Individual
-                <ArrowRight className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                className="inline-flex items-center justify-center gap-2 border-2 border-white/30 text-white px-8 py-4 rounded-full text-base font-semibold hover:bg-white/10 transition"
-              >
-                Corporate Training Inquiry
-              </a>
-            </div>
-            <p className="mt-6 text-white/50 text-sm">
-              Have questions? Reach out to us at{" "}
-              <span className="text-[#7df3c4] font-medium">
-                hello@skillhouse.in
-              </span>
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      {/* Enroll / Tally Form Section */}
+        <section
+          id="enroll"
+          className="py-20 sm:py-28 bg-gradient-to-br from-[#063b2b] via-[#0a825e] to-[#063b2b] text-white"
+        >
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
+                Join to Access{" "}
+                <span className="text-[#7df3c4]">
+                  <CountUp target={100} suffix="+" />
+                </span>{" "}
+                AI Tools
+              </h2>
+              <p className="mt-6 text-white/70 text-lg max-w-2xl mx-auto">
+                Join our next batch and get access to AI-powered training,
+                industry mentors, and placement assistance. Limited seats available.
+              </p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="bg-white rounded-2xl p-6 sm:p-10 shadow-2xl"
+            >
+              <iframe
+                data-tally-src="https://tally.so/embed/QK5Ajk?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
+                loading="lazy"
+                width="100%"
+                height="529"
+                frameBorder="0"
+                marginHeight={0}
+                marginWidth={0}
+                title="Join the Waitlist"
+              ></iframe>
+            </motion.div>
+          </div>
+        </section>
 
       {/* Footer */}
       <footer className="bg-[#031f17] text-white/60 py-12">
