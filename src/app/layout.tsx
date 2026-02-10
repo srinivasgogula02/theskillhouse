@@ -1,8 +1,11 @@
+import "./ssr-polyfill-init"; // Import it first to ensure it runs before other imports
 import type { Metadata } from "next";
+import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
-import VisualEditsMessenger from "../visual-edits/VisualEditsMessenger";
+import VisualEditsMessenger from "@/visual-edits/VisualEditsMessenger";
 import ErrorReporter from "@/components/ErrorReporter";
 import Script from "next/script";
+
 
 export const metadata: Metadata = {
   title: "SkillHouse | AI-Powered Finance Upskilling",
