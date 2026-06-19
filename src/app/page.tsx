@@ -906,10 +906,10 @@ export default function Home() {
           <div className="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm">
             <p>&copy; 2025 SkillHouse. All rights reserved.</p>
             <div className="flex gap-6">
-              <a href="#" className="hover:text-white transition">
-                Privacy Policy
+              <a href="/refundpolicy" className="hover:text-white transition">
+                Refund Policy
               </a>
-              <a href="#" className="hover:text-white transition">
+              <a href="/termsofservice" className="hover:text-white transition">
                 Terms of Service
               </a>
             </div>
