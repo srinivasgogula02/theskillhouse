@@ -898,7 +898,7 @@ export default function Home() {
               <h4 className="text-white font-semibold mb-4">Contact</h4>
               <ul className="space-y-2 text-sm">
                 <li>hello@skillhouse.in</li>
-                <li>+91 98765 43210</li>
+                <li>+91 74163 21188</li>
                 <li>Mumbai, India</li>
               </ul>
             </div>

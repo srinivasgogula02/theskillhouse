@@ -271,7 +271,7 @@ export default function TermsOfServicePage() {
                   hello@skillhouse.in
                 </a>
               </li>
-              <li>Phone: +91 98765 43210</li>
+              <li>Phone: +91 74163 21188</li>
               <li>Address: Mumbai, India</li>
             </ul>
           </Section>
